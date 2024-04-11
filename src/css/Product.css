@@ -67,7 +67,7 @@ body {
 .card_image .img9 {
   width: 290px;
   height: 200px;
-  object-fit: cover;
+  object-fit:fill;
   /* padding: 2px; */
 }
 

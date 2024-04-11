@@ -1,3 +1,4 @@
+import axios from "axios";
 import { createContext, useContext ,useState,useEffect} from "react";
 import { toast } from "react-toastify";
 // import { logoutUser } from "../redux/productSlide";
@@ -10,6 +11,8 @@ export const AuthProvider = ({ children }) => {
     const [products,setProduct] = useState([])
     const [cartItem,setcartItem] = useState([])
     const [isLoading , setIsLoading] = useState(false);
+
+    axios.defaults.headers.common["Authorization"] = user?token:"";
 
 
     const backendApi = "https://glorious-hat-toad.cyclic.app/api/v1"
@@ -141,11 +144,11 @@ if (response.ok) {
 
 
   
-  useEffect(() => {
+  useEffect(async() => {
     userAuthentication();
     getTeam();
     getProduct();
-    showCart();
+   await showCart();
   }, []); 
 
     return (

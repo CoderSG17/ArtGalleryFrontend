@@ -52,13 +52,16 @@ const Contact = () => {
             headers: {
                 Authorization:token,
                 "Content-Type":"application/json",
-            }
+            },
+            body:JSON.stringify(contact)        
           });
           console.log(response);
           if(response.ok){
             console.log(1)
               console.log('Response data:', response.data);
+
               toast.success("Message sent successfully")
+              setContact("")
               setIsLoading(false)
           }
           else{

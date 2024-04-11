@@ -5,6 +5,7 @@ import { useAuth } from './Auth'
 import { useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import axios  from 'axios'
+import { TbPhotoPlus } from 'react-icons/tb'
 
 const Edit = () => {
     const { products } = useAuth()
@@ -16,13 +17,12 @@ const Edit = () => {
     const productDisplay = products.filter((elem) => elem._id === id)[0];
     console.log(productDisplay)
 
-
+    const [isLoading,setIsLoading]=useState(false)
     const [productData, setProductData] = useState(true)
     const [cardProduct, setcardProduct] = useState({
         name: "",
         description: "",
         price: "",
-        photo: "",
     })
 
     if (productData && products) {
@@ -47,46 +47,95 @@ const Edit = () => {
     };
     const token = localStorage.getItem('token');
 
-    const updateProduct = async (id) => {
-        // console.log(params.id)
+    // const updateProduct = async (id) => {
+    //     // console.log(params.id)
+    //     try {
+    //         console.log(`${backendApi}/product/update-product/${id}`)
+    //         const response = await fetch(`${backendApi}/product/update-product/${id}`, {
+    //             method: 'PUT',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //                 Authorization: token,
+    //             },
+    //             body: JSON.stringify(cardProduct)
+
+    //         });
+    //         console.log(response)
+
+    //         const data = await response.json();
+    //         console.log(data)
+
+    //         if (response.ok) {
+    //             toast.success("Product updated successfully")
+
+    //         }
+    //         else {
+    //             console.log('error')
+    //         }
+    //     }
+
+    //     catch (error) {
+    //         console.log("Api not found")
+    //     }
+    // }
+    const [photo, setPhoto] = useState("");
+
+    const updateProduct = async (e) => {
+        e.preventDefault();
         try {
-            const response = await fetch(`${backendApi}/product/update-product/${id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: token,
-                },
-                body: JSON.stringify(cardProduct)
+            setIsLoading(true)
+          let newForm = new FormData();
+          newForm.append("name", cardProduct.name);
+          newForm.append("description", cardProduct.description);
+          newForm.append("price", cardProduct.price);
+          photo && newForm.append("photo", photo);
+          for (var key of newForm.entries()) {
+            console.log(key[0] + ", " + key[1]);
+          }
+          const res = await axios.put(
+            `${backendApi}/product/update-product/${id}`,
+            newForm
+          );
+          console.log(res)
+          toast.success("Successfully Updated")
+                      setIsLoading(false)
 
-            });
-            console.log(response)
-
-            const data = await response.json();
-            console.log(data)
-
-            if (response.ok) {
-                toast.success("Product updated successfully")
-
-            }
-            else {
-                console.log('error')
-            }
+        } catch (error) {
+            
+            console.log(error);
+            toast.error("something went wrong");
+            setIsLoading(false)
         }
-
-        catch (error) {
-            console.log("Api not found")
-        }
-    }
+      };
 
     return (
         <>
             <Navbar></Navbar>
             <div>
                 <div className="container container3">
+                <div>
                     {/* <div className="container-close">&times;</div> */}
-                    <img
+                    {/* <img
                         src="https://images.unsplash.com/photo-1534670007418-fbb7f6cf32c3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80"
+                        alt="image" className='img10' /> */}
+                        {photo ? (
+                <img
+                  src={URL.createObjectURL(photo)}
+                  alt="error"
+                  className="img10"
+                />
+            ) : (
+                <img
+                        src={`https://glorious-hat-toad.cyclic.app/api/v1/product/product-photo/${productDisplay._id}`}
                         alt="image" className='img10' />
+            )}
+            <label htmlFor='file' className='label2'>
+            <TbPhotoPlus className='icn8'  htmlFor='file' style={{ color: "black" }} />
+            
+            Upload </label>
+                            <input type='file' id='file' className='input' name='file' accept='image/*' onChange={(e)=>setPhoto(e.target.files[0])}></input>
+
+</div>
                     <div className="container-text">
                         <h2 style={{ textDecoration: "underline" }}>Edit Products</h2>
                         <label className='label1'  >Enter Name</label>
@@ -98,7 +147,7 @@ const Edit = () => {
 
                         <input type="number" placeholder="Price" onChange={handleInput} name='price' value={cardProduct.price} />
           
-                        <button type="submit" onClick={() => updateProduct(productDisplay._id)}>Update</button>
+                        <button type="submit" onClick={updateProduct}>Update</button>
                     </div>
                 </div>
             </div>
