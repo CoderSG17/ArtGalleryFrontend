@@ -76,7 +76,7 @@ const Product = ({ title , navbar}) => {
                 <ul className="cards">
                     {products.map((elem) => {
                         const { name, price, description, _id ,user} = elem;
-                        return  <li className="cards_item">
+                        return  <li className="cards_item" key={_id}>
                                 <div className="card">
                                     <div className="card_image">
                                         <img src={`https://glorious-hat-toad.cyclic.app/api/v1/product/product-photo/${_id}`} alt="error" className='img9' />

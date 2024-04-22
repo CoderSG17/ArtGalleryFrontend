@@ -128,7 +128,7 @@ useEffect(() => {
 
                         {cartItem.length!=0?cartItem.map((elem) => {
                             const { name, price, description, _id ,quantity} = elem;
-                            return <div className="row border-top border-bottom">
+                            return <div className="row border-top border-bottom" key={_id}>
                                 <div className="row main1 align-items-center">
                                     <div className="col-2">
                                         <img className="img-fluid img" src={`https://glorious-hat-toad.cyclic.app/api/v1/product/product-photo/${_id}`} /></div>

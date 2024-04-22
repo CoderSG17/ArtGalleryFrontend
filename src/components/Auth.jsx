@@ -144,12 +144,15 @@ if (response.ok) {
 
 
   
-  useEffect(async() => {
+  useEffect(() => {
     userAuthentication();
     getTeam();
     getProduct();
-   await showCart();
   }, []); 
+  
+  useEffect(() => {
+  showCart()}
+,[])
 
     return (
         <>

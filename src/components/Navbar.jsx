@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaSearch } from "react-icons/fa";
 import { PiList } from "react-icons/pi";
 import { FaRegUserCircle } from "react-icons/fa";
@@ -15,6 +15,7 @@ const Navbar = () => {
   let cartVal = cartItem?cartItem.reduce((initialVal,curr)=>
             initialVal+curr.quantity
     ,0):""
+
   return (
     <>
       <div className='navbar '>
