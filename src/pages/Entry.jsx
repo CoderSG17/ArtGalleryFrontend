@@ -3,15 +3,21 @@ import '../css/Entry.css'
 import Register from './Register';
 import Login from './Login';
 import Navbar from '../components/Navbar';
+import { useAuth } from '../components/Auth';
+import Authorize from '../components/Authorize';
 
 const Entry = () => {
 
+  const {isLoggedIn} = useAuth();
+
+
   return (
     <>
+    {!isLoggedIn?<>
     <Navbar></Navbar>
     <div className='body'>
         
-  <div className="container" style={{height:"510px" ,marginTop:"20px"}}>
+  <div className="container" style={{height:"510px" ,marginTop:"-20px"}}>
     <input type="checkbox" id="flip"/>
     <div className="cover">
       <div className="front">
@@ -36,8 +42,8 @@ const Entry = () => {
     </div>
     </div>
   </div>
-  </div>
-
+  </div></>:<Authorize></Authorize>
+}
     </>
   )
 }

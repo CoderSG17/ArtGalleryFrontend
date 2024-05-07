@@ -4,7 +4,7 @@ const Footer = () => {
   return (
     <>
     <footer className="site-footer">
-      <div className="" style={{border:"1px solid red",margin:"0 40px"}}>
+      <div className="" style={{margin:"80px 40px 0 40px"}}>
         <div className="row">
           <div className="col-sm-12 col-md-6">
             <h6>About</h6>
@@ -36,7 +36,7 @@ const Footer = () => {
         </div>
         <hr/>
       </div>
-      <div className="" style={{border:"1px solid red" , margin:"0 40px"}}>
+      <div className="" style={{ margin:"0 40px"}}>
         <div className="row">
           <div className="col-md-8 col-sm-6 col-xs-12">
             <p className="copyright-text">Copyright &copy; 2017 All Rights Reserved by 

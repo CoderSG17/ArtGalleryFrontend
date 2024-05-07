@@ -3,7 +3,7 @@
     /* position: fixed; */
     display: flex;
     justify-content: space-between;
-    border: 1px solid red ;
+    /* border: 1px solid red ; */
     margin: 0 40px;
     z-index: 99;
     top: 0;

@@ -5,8 +5,11 @@ import { FaArrowRightLong } from "react-icons/fa6";
 import { FaWpexplorer } from "react-icons/fa";
 import { NavLink } from 'react-router-dom';
 import Footer from '../components/Footer';
-import Product from './Product';
+import { useAuth } from '../components/Auth';
+import Product1 from './Product1';
 const Home = () => {
+  const {products} = useAuth()
+  console.log(products)
   return (
     <>
     <Navbar></Navbar>
@@ -59,8 +62,9 @@ const Home = () => {
 
 
 </div>
-<Product title='All Gallery Items'></Product>
-<Footer></Footer>
+      <Product1 title={"All Products"}></Product1>
+      <Footer></Footer>
+
     </>
   )
 }

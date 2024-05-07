@@ -127,7 +127,9 @@ font-family: 'EB Garamond', serif;
 }
 
 .btn2 .price {
-	transform: translateX(-10%); padding-right: 15px;
+	transform: translateX(-10%); 
+	/* padding-left: 35px; */
+	margin-left: -10px;
 }
 
 .btn2 .shopping-cart {

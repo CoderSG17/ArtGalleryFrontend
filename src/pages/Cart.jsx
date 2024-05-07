@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import '../css/Cart.css'
-// import { useDispatch, useSelector } from 'react-redux';
 import { IoArrowBackCircle, IoTrashBin } from "react-icons/io5";
 import { NavLink } from 'react-router-dom';
 import { HiMinusCircle, HiPlusCircle } from "react-icons/hi";
@@ -9,45 +8,32 @@ import { useAuth } from '../components/Auth';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import FormatPrice from '../components/FormatPrice';
-import Product from './Product';
 import Loader from '../components/Loader';
-// import {increaseQty,decreaseQty} from '../redux/productSlide'
 const Cart = () => {
-    // const productCartItem = useSelector((state) => state.product.cartItem);
-    // console.log(productCartItem) 
+  
     const [isLoading , setIsLoading] = useState(false);
     const token = localStorage.getItem('token')
     const [quantity, setQuantity] = useState(1);
 
     const [shipment, setShipment] = useState({
-        // standard:"",
-        // fast:"",
-        // superfast:""
         shipmethod:""
     })
 
     const { cartItem } = useAuth()
     console.log(cartItem)
-    // const { showCart } = useAuth()
-
-    // const dispatch = useDispatch()
+   
     const increaseQty = (id) => {
-        // console.log(id)
         cartItem.map((elem)=>{
-            // console.log(elem._id===id)
-            // console.log(typeof(elem.quantity))
+            
             elem._id === id?setQuantity(++elem.quantity):"";
         })
     };
     const decreaseQty = (id) => {
-        // console.log(id)
         cartItem.map((elem)=>{
-            // console.log(elem._id===id)
             elem._id === id?elem.quantity>1?setQuantity(--elem.quantity):setQuantity(1):"";
         })
     };
 
-    // const totlPrice = quantity * 10;
 
     const totalPrice = cartItem?cartItem.reduce((sum,curr)=>parseFloat(sum) + parseFloat(curr.price),0):""
     console.log(totalPrice)
@@ -71,7 +57,10 @@ const Cart = () => {
                 // console.log(data.products);
 
                 // setcartItem(data.products);
-                // window.location.reload()
+                setTimeout(()=>{
+
+                    window.location.reload()
+                },100)
                 toast.success('Product deleted successfully')
                 setIsLoading(false)
             } else {
@@ -85,10 +74,7 @@ const Cart = () => {
         }
     }
 
-    // useEffect(() => {
-    //     showCart()
-    // }, [
-    // ])
+  
     
     const handleShip=(e) => {
         const { name, value } = e.target
@@ -107,7 +93,7 @@ const Cart = () => {
 ,0):""
 
 useEffect(() => {
-    cartItem
+
 },[cartItem])
 
 
@@ -126,7 +112,7 @@ useEffect(() => {
                             </div>
                         </div>
 
-                        {cartItem.length!=0?cartItem.map((elem) => {
+                        {cartItem&& cartItem.length!=0?cartItem.map((elem) => {
                             const { name, price, description, _id ,quantity} = elem;
                             return <div className="row border-top border-bottom" key={_id}>
                                 <div className="row main1 align-items-center">
@@ -181,7 +167,7 @@ useEffect(() => {
 
             </div>
 
-        <Product title={"More Products to buy"}></Product>
+        {/* <Product1 title={"More Products to buy"}></Product1> */}
         </>
     )
 }

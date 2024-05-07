@@ -2,10 +2,11 @@ import React, { useState } from 'react'
 import "../css/Edit.css"
 import Navbar from './Navbar'
 import { useAuth } from './Auth'
-import { useParams } from 'react-router-dom'
+import { NavLink, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import axios  from 'axios'
 import { TbPhotoPlus } from 'react-icons/tb'
+import Loader from '../components/Loader'
 
 const Edit = () => {
     const { products } = useAuth()
@@ -47,37 +48,6 @@ const Edit = () => {
     };
     const token = localStorage.getItem('token');
 
-    // const updateProduct = async (id) => {
-    //     // console.log(params.id)
-    //     try {
-    //         console.log(`${backendApi}/product/update-product/${id}`)
-    //         const response = await fetch(`${backendApi}/product/update-product/${id}`, {
-    //             method: 'PUT',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //                 Authorization: token,
-    //             },
-    //             body: JSON.stringify(cardProduct)
-
-    //         });
-    //         console.log(response)
-
-    //         const data = await response.json();
-    //         console.log(data)
-
-    //         if (response.ok) {
-    //             toast.success("Product updated successfully")
-
-    //         }
-    //         else {
-    //             console.log('error')
-    //         }
-    //     }
-
-    //     catch (error) {
-    //         console.log("Api not found")
-    //     }
-    // }
     const [photo, setPhoto] = useState("");
 
     const updateProduct = async (e) => {
@@ -111,10 +81,13 @@ const Edit = () => {
     return (
         <>
             <Navbar></Navbar>
+            {isLoading?<Loader></Loader>:""}
             <div>
                 <div className="container container3">
                 <div>
-                    {/* <div className="container-close">&times;</div> */}
+                    <NavLink to={`/menu/${id}`}>
+                    <div className="container-close">&times;</div>
+                    </NavLink>
                     {/* <img
                         src="https://images.unsplash.com/photo-1534670007418-fbb7f6cf32c3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80"
                         alt="image" className='img10' /> */}
@@ -137,7 +110,7 @@ const Edit = () => {
 
 </div>
                     <div className="container-text">
-                        <h2 style={{ textDecoration: "underline" }}>Edit Products</h2>
+                        <h2 style={{ textDecoration: "underline" , color:"white"}}>Edit Product</h2>
                         <label className='label1'  >Enter Name</label>
                         <input type="text" placeholder="Name" onChange={handleInput} name='name' value={cardProduct.name} />
                         <label className='label1' >Enter Description</label>

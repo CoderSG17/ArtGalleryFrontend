@@ -6,12 +6,13 @@ import axios from 'axios'
 import { useAuth } from '../components/Auth'
 import { toast } from 'react-toastify'
 import Loader from '../components/Loader'
+import Authorize from '../components/Authorize'
 const Contact = () => {
 
     const [contactData, setcontactData] = useState(true)
     const [isLoading,setIsLoading]= useState(false)
 
-    const { user } = useAuth()
+    const { isLoggedIn ,user } = useAuth()
     // console.log(user)
 
     const [contact , setContact] = useState({
@@ -25,9 +26,8 @@ const Contact = () => {
         setContact({
             name: user.name,
             email: user.email,
-            
         });
-        setcontactData(false);
+        setcontactData(false);  
     }
 
     const handleInput = (e) => {
@@ -55,10 +55,7 @@ const Contact = () => {
             },
             body:JSON.stringify(contact)        
           });
-          console.log(response);
           if(response.ok){
-            console.log(1)
-              console.log('Response data:', response.data);
 
               toast.success("Message sent successfully")
               setContact("")
@@ -81,46 +78,46 @@ const Contact = () => {
 
     return (
         <>
-            <Navbar></Navbar>
+            {isLoggedIn?<><Navbar></Navbar>
             <div className='maindiv'>
 
-                <div class="talk">
+                <div className="talk">
                     <p>Let's talk about everything!  &nbsp; <Comment
                         visible={true}
                         height="80"
                         width="80"
                         ariaLabel="comment-loading"
                         // wrapperStyle={{}}
-                        wrapperClass="comment-wrapper"
+                        wrapperclassName="comment-wrapper"
                         color="#fff"
                         backgroundColor="#F4442E"
                     /></p>
                     
                 </div>
 
-                <div class="mid-left">
+                <div className="mid-left">
                     <div>Start your Conversation with us! Here you can know your idea.</div>
 
                     <img src="images/contact.jpg" alt="error" />
                 </div>
 
 
-                <div class="container container2">
-                    <div class="form-container">
+                <div className="container container2">
+                    <div className="form-container">
                         <form onSubmit={handleSubmit}>
-                            <label for="name"></label>
+                            <label htmlFor="name"></label>
                             <input type="text" id="name" placeholder="Name" required  onChange={handleInput}  name="name" value={contact.name}/>
-                            <label for="email"></label>
+                            <label htmlFor="email"></label>
                             <input type="email" id="email" name="email" placeholder="E-mail" required  onChange={handleInput}   value={contact.email}/>
-                            <label for="subject"></label>
+                            <label htmlFor="subject"></label>
                             <input type="text" id="subject" name="subject" placeholder="Subject" required  onChange={handleInput} value={contact.subject} />
-                            <label for="message"></label>
+                            <label htmlFor="message"></label>
                             <textarea id="message" name="message" rows="4" placeholder="Your message here" required  onChange={handleInput}  value={contact.message}></textarea>
                             <input type="submit" value="Send Message" />
                         </form>
                     </div>
                 </div>
-            </div>
+            </div></>:<Authorize></Authorize>}
             {isLoading && <Loader></Loader>
                     }                   
 

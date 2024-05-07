@@ -1,18 +1,18 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
-import { Provider } from 'react-redux'
+// import { Provider } from 'react-redux'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AuthProvider } from './components/Auth.jsx';
-import { store } from './redux/index.js'
+// import { store } from './redux/index.js'
 
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <AuthProvider>
     <React.StrictMode>
-      <Provider store={store}>
+      {/* <Provider store={store}> */}
         <App />
         <ToastContainer
           position="top-right"
@@ -26,7 +26,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           bodyClassName="toastBody"
 
         />
-      </Provider>
+      {/* </Provider> */}
 
     </React.StrictMode>
   </AuthProvider>

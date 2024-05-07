@@ -1,6 +1,6 @@
 .outerdiv{
-    border: 1px solid red   ;
-    margin: 50px 75px 0 55px;
+    /* border: 1px solid red   ; */
+    margin: 20px 75px 0 55px;
     height: 540px;
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -29,6 +29,13 @@
   width: 60px;
   right:12%;
   border-radius: 50%;
+}
+.title3{
+  color: white;
+  font-size: 30px;
+  position: absolute;
+  right: 45%;
+  bottom: -220px;
 }
 
   .right{

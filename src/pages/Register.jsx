@@ -42,12 +42,9 @@ const Register = () => {
       
   const handleSubmit=async(e)=>{
     e.preventDefault();
-    // console.log(registerUser);
     
     try {
       setIsLoading(true);
-      // const response = await fetch(`http://localhost:8000/entry/register`, {
-        console.log(`${import.meta.env.baseUrl}`)
       const response = await fetch(`https://glorious-hat-toad.cyclic.app/api/v1/user/register`, {
         method: "POST",
         headers: {
@@ -74,9 +71,7 @@ const Register = () => {
         navigate('/home')
         toast.success("Registration successful");  
         // console.log(resData);
-      } else {
-        // toast.error(resData.extraDetails?resData.extraDetails:resData.message)
-        toast.error("No response");  
+      } else {        toast.error(resData.message);  
         
         console.log("error inside response ", "error");
         setIsLoading(false)

@@ -6,15 +6,25 @@ import '../css/Navbar.css'
 import { NavLink } from 'react-router-dom';
 import { useAuth } from './Auth';
 import { FaCartShopping } from "react-icons/fa6";
+import { toast } from 'react-toastify';
 const Navbar = () => {
- const {user}  = useAuth()
+
+  const {user}  = useAuth()
   const {isLoggedIn} = useAuth()
   const [dropdownMenu  ,setdropdownMenu] = useState(false)
-
+  
   const { cartItem } = useAuth()
   let cartVal = cartItem?cartItem.reduce((initialVal,curr)=>
-            initialVal+curr.quantity
-    ,0):""
+  initialVal+curr.quantity
+  ,0):""
+
+  
+  const alert = ()=>{
+    toast.error("You must be logged in")
+  }
+  useEffect(()=>{
+
+  },[isLoggedIn,user])
 
   return (
     <>
@@ -23,7 +33,7 @@ const Navbar = () => {
       <img src="images/navbar_logo.jpg" alt="error" className='img' />
       </NavLink>
 
-      <input type="text" placeholder='Search' className='inp'/>
+      {/* <input type="text" placeholder='Search' className='inp'/> */}
       {/* <FaSearch className='searchicon'/> */}
 
       <div>
@@ -52,7 +62,7 @@ const Navbar = () => {
             <p className='para'>About Us</p>
         </NavLink>
         <NavLink to='/cart' className="navlink" >
-            <p className='para'>Cart <sup className='sup'>{cartVal}</sup></p>
+            <p className='para'>Cart <sup className='sup'>{cartVal?cartVal:"0"}</sup></p>
             {/* <FaCartShopping style={{left:"52px", position:"absolute",bottom:"60px"}} className='icon'/> */}
         </NavLink>
         <NavLink to='/logout' className="navlink" style={{color:"red"}}>
@@ -61,20 +71,25 @@ const Navbar = () => {
         </>
         :
         <><NavLink to='/entry' className="navlink">
-                  <p className='para'>Login</p>
-                </NavLink><NavLink to='/entry' className="navlink">
-                    <p className='para'>Signup</p>
-                  </NavLink></>}
+                  <p className='para'>Login/SignUp</p>
+                </NavLink>
+        
+                  </>
+                  }
         
         
       </div>:""
       }
-
+{isLoggedIn?
       <NavLink to='/about' style={{color:"black"}}>
       
       {user.photo?<img src={`https://glorious-hat-toad.cyclic.app/api/v1/user/photo/${user._id}`} alt="error" className='icn3' />:
       user.avatar? <img src={user.avatar} alt="error" className='icn3' />: <FaRegUserCircle className='icn'/>}
-      </NavLink>
+      </NavLink>:
+      <NavLink to='/entry' style={{color:"black"}} onClick={alert}> 
+      {user.photo?<img src={`https://glorious-hat-toad.cyclic.app/api/v1/user/photo/${user._id}`} alt="error" className='icn3' />:
+      user.avatar? <img src={user.avatar} alt="error" className='icn3' />: <FaRegUserCircle className='icn'/>}
+      </NavLink>}
       </div>
 
 

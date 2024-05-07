@@ -2,110 +2,135 @@ import React, { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import '../css/Product.css'
 import { useAuth } from '../components/Auth'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { FaCartPlus } from 'react-icons/fa'
 import { toast } from 'react-toastify'
 import axios from 'axios'
 import FormatPrice from '../components/FormatPrice'
 import Loader from '../components/Loader'
-const Product = ({ title , navbar}) => {
+import '../css/Product.css'
+const Product = ({name ,price,_id,description,user }) => {
 
-    const [isLoad , setisLoad] = useState(false)
+    const [isLoad, setisLoad] = useState(false)
+    const navigate = useNavigate();
 
-    const { products } = useAuth()
-    // console.log(products)
 
-    const {isLoading}=useAuth()
+    const { isLoading,products } = useAuth()
     const token = localStorage.getItem('token')
 
-    const addToCart = async (id) => {   
+    const productDisplay = products.filter((elem) => elem._id === _id)[0];
+    console.log(productDisplay)
+
+
+    const addToCart = async (id) => {
         try {
             setisLoad(true)
-          const response = await axios.post(`https://glorious-hat-toad.cyclic.app/api/v1/cart/add-cartproducts/${id}`,id,{
-            headers:{
-            Authorization:token
-            }
-          });
-        //   console.log('Item added to cart:', response.data);
-          toast.success(response.data.message);
-        //   window.location.reload();
-          setisLoad(false)
-          return response.data;
+            const response = await axios.post(`https://glorious-hat-toad.cyclic.app/api/v1/cart/add-cartproducts/${id}`, id, {
+                headers: {
+                    Authorization: token
+                }
+            });
+            //   console.log('Item added to cart:', response.data);
+            toast.success(response.data.message);
+            setTimeout(()=>{
+                window.location.reload()
+            },100)
+            setisLoad(false)    
+            return response.data;
         } catch (error) {
             setisLoad(false)
-          throw error;
+            toast.error(error.response.data.message);
         }
-      };
+    };
+
+    const handleDelete = async (id) => {
+        try {
+            setisLoad(true)
+            const response = await axios.delete(`https://glorious-hat-toad.cyclic.app/api/v1/product/delete-product/${id}`, {
+                headers: {
+                    // method: "DELETE",
+                    Authorization: token
+                }
+            });
+
+            if (response) {
+				navigate('/allproducts')
+                toast.success('Product deleted successfully')
+                setisLoad(false)
+            } else {
+                console.error("Error");
+                setisLoad(false)
+            }
+        } catch (error) {
+
+            console.log(error);
+            setisLoad(false)
+        }
+    }
+
+    useEffect(()=>{
+
+    },[productDisplay,products])
 
     return (
         <>
-            {/* <h1 style={{color: "wheat"
- ,margin:"150px 0 40px 80px" , textDecoration:"underline"}}>{title}</h1>
-            <div className="main">
-                <ul className="cards">
-                    {products.map((elem) => {
-                        const { name, price, description, _id } = elem;
-                        return <NavLink to={`/menu/${_id}`} style={{ textDecoration: "none", color: "black" }}
-                            onClick={() => window.scrollTo({ top: "0", behavior: "smooth" })}><li className="cards_item">
-                                <div className="card">
-                                    <div className="card_image">
-                                        <img src={`https://glorious-hat-toad.cyclic.app/api/v1/product/product-photo/${_id}`} alt="No Image" className='img9' /></div><br />
-                                    <div className="card_content">
-                                        <h2 className="card_title">{name} &#x2022; ${price}</h2>
-                                        <div className="card_text">
-                                            <p className='para'>{description}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                        </NavLink>
-                    })}
-                </ul>
-            </div> */}
-            {navbar}
-
             {isLoading && <Loader></Loader>
-                    }
+            }
             {isLoad && <Loader></Loader>
-                    }
-            <h1 style={{
-                color: "wheat"
-                , margin: "50px 0 40px 80px", textDecoration: "underline"
-            }}>{title}</h1>
-            <div className="main">
-                <ul className="cards">
-                    {products.map((elem) => {
-                        const { name, price, description, _id ,user} = elem;
-                        return  <li className="cards_item" key={_id}>
-                                <div className="card">
-                                    <div className="card_image">
-                                        <img src={`https://glorious-hat-toad.cyclic.app/api/v1/product/product-photo/${_id}`} alt="error" className='img9' />
-                                        <div className='cartbtn'>
-                                        <FaCartPlus className='carticon' title='Add to Cart' onClick={()=>addToCart(_id)}/>
-                                        </div>
-                                        <span className="card_price"><FormatPrice price={price}></FormatPrice></span>
-                                    </div>
-
-                                    <NavLink to={`/menu/${_id}`} style={{ textDecoration:"none", color: "black" ,listStyle:"none"}}
-                            onClick={() => window.scrollTo({ top: "0", behavior: "smooth" })}>
-                                    <div className="card_content">
-                                        <h2 className="card_title">{name}</h2>
-                                        <div className="card_text">
-                                            <p>{description}
-                                            </p>
-                                            <b style={{color:"white"}}>Created by {user.name}</b>
-                                        </div>
-                                    </div>
-
-                        </NavLink>
-
+            }
+                        <div className="wrapper-card" key={_id}>
+                            <div className="container-card" key={_id}>
+                                <div className="top">
+                                <NavLink to={`/menu/${_id}`} style={{ textDecoration: "none", color: "black" }}>
+                                    <img
+                                        src={`https://glorious-hat-toad.cyclic.app/api/v1/product/product-photo/${_id}`}
+                                        className="card-img-top"
+                                        alt={"p.name"}  onClick={() => window.scrollTo({ top: "0", behavior: "smooth" })}   
+                                    />
+                                    </NavLink>
                                 </div>
-                            </li>
-                    })}
+                                <div className="bottom">
+                                    <div className="left">
+                                        <div className="details">
+                                            <h1 >{name?.substring(0, 10)}...</h1>
+                                            <p>
+                                                {price?.toLocaleString("en-US", {
+                                                    style: "currency",
+                                                    currency: "INR",
+                                                })}
+                                            </p>
+                                        </div>
+                                        <div className="buy" >
+                                            <i
+                                                className="material-icons"
+                                                onClick={() => addToCart(_id)}
+                                            >
+                                                Add to
+                                                <br />
+                                                Cart
+                                            </i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                className="inside"
+                                                    >
+                                <div className="icon">
+                                    <i className="material-icons"> Detail</i>
+                                </div>
+                                <div className="contents">{description}</div>
+                                <div className="contents">Created By <b>{user?user.name:"You"}</b></div>
+                                {!user?<>
 
+                                {productDisplay?<NavLink to={`/edit/${productDisplay._id}`} className="contents"><button className='btn4'>Edit</button></NavLink>:""}
+                                <button className='btn5'  onClick={()=>handleDelete(productDisplay._id)}>Delete</button>
+                                </>
+                                :""
+                                }
+                            </div>
+                        </div>
                 
-                </ul>
-            </div>
         </>
     )
 }
